@@ -1,6 +1,7 @@
 # module DayXX <--- uncomment when problem is solved
 
 function parse_file(filename)
+    lines = readlines(filename)
 end
 
 function part1(parsed_data)
