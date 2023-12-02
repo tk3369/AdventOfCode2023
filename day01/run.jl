@@ -1,4 +1,6 @@
-function parse(filename)
+module Day01
+
+function parse_file(filename)
     return readlines(filename)
 end
 
@@ -6,7 +8,7 @@ function first_digit(s::AbstractString)
     for c in s
         isdigit(c) && return c
     end
-    error("no digit found")
+    error("no digit found from string: $s")
 end
 
 function calibration_value(s::AbstractString)
@@ -14,8 +16,8 @@ function calibration_value(s::AbstractString)
     return Base.parse(Int, val_str)
 end
 
-function part1(filename)
-    return sum(calibration_value.(parse(filename)))
+function part1(parsed_data)
+    return sum(calibration_value.(parsed_data))
 end
 
 # part 2
@@ -45,11 +47,8 @@ function calibration_value2(s::AbstractString)
     return Base.parse(Int, val_str)
 end
 
-function part2(filename)
-    return sum(calibration_value2.(parse(filename)))
+function part2(parsed_data)
+    return sum(calibration_value2.(parsed_data))
 end
 
-function run_day()
-    println("part1: ", part1("input.txt"))
-    println("part2: ", part2("input.txt"))
 end

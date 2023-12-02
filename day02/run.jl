@@ -1,3 +1,4 @@
+module Day02
 struct CubeSet
     num::Int
     color::String
@@ -55,8 +56,8 @@ function score(games::Vector{Game})
     return sum(g.id for g in games)
 end
 
-function part1(filename)
-    games = parse_file(filename)
+function part1(parsed_data)
+    games = parsed_data
     return score(games[is_possible.(games)])
 end
 
@@ -74,12 +75,8 @@ function find_fewest_possible(game::Game)
     return red * green * blue
 end
 
-function part2(filename)
-    games = parse_file(filename)
-    return sum(find_fewest_possible.(games))
+function part2(parsed_data)
+    return sum(find_fewest_possible.(parsed_data))
 end
 
-function run_day()
-    println("part1: ", part1("input.txt"))
-    println("part2: ", part2("input.txt"))
 end
