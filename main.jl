@@ -19,12 +19,12 @@ end
 # run for a particular test file.
 function run(mod, filename="input.txt", parts=[1, 2])
     if isdefined(mod, :part1) && 1 in parts
-        @time println("part1: ", mod.part1(mod.parse_file(filename)))
+        println("part1: ", mod.part1(mod.parse_file(filename)))
     elseif 1 in parts
         println("Missing part1 definition")
     end
     if isdefined(mod, :part2) && 2 in parts
-        @time println("part2: ", mod.part2(mod.parse_file(filename)))
+        println("part2: ", mod.part2(mod.parse_file(filename)))
     elseif 2 in parts
         println("Missing part2 definition")
     end
@@ -34,8 +34,10 @@ end
 # are already completed.
 function bmk(mod, filename="input.txt")
     data = mod.parse_file(filename)
-    @btime mod.part1($data)
-    @btime mod.part2($data)
+    result = @benchmark $(mod.part1)($data)
+    println("Part1: $(summary(result))")
+    result = @benchmark $(mod.part2)($data)
+    println("Part2: $(summary(result))")
 end
 
 # The normal situation is that you have a single test input (test.txt).

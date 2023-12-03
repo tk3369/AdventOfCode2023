@@ -46,10 +46,23 @@ function parse_engine_parts!(dct, line, row)
     return dct
 end
 
+# Pre-allocate memory for performance
+const rel_positions = [CI(-1, -1), CI(-1, 0), CI(-1, 1), CI(1, -1), CI(1, 0), CI(1, 1), CI(0, 1), CI(0, -1)]
+const surroundings = [CI(0, 0) for i in 1:length(rel_positions)]
+
 function overlap(sym_position, num_block)
-    surroundings = Ref(sym_position) .+
-                   [CI(-1, -1), CI(-1, 0), CI(-1, 1), CI(1, -1), CI(1, 0), CI(1, 1), CI(0, 1), CI(0, -1)]
-    return any(in.(surroundings, Ref(num_block)))
+    for (i, r) in enumerate(rel_positions)
+        @inbounds surroundings[i] = sym_position + rel_positions[i]
+    end
+    for s in surroundings
+        if s in num_block
+            return true
+        end
+    end
+    return false
+    # sur = Ref(sym_position) .+
+    #       [CI(-1, -1), CI(-1, 0), CI(-1, 1), CI(1, -1), CI(1, 0), CI(1, 1), CI(0, 1), CI(0, -1)]
+    # return any(in.(sur, Ref(num_block)))
 end
 
 function find_gears(sym_position, dct)
@@ -71,6 +84,7 @@ function part1(parsed_data)
             if overlap(sym_position, num_block)
                 # push!(result, (num_block, val, sym_position))
                 answer += val
+                break
             end
         end
     end
@@ -81,6 +95,25 @@ end
 function part2(parsed_data)
     dct, syms = parsed_data
     return sum(find_gears(s, dct) for s in syms)
+end
+
+# --- experimental ---
+
+# Using this function regressed part2 from 19ms to 32ms, which is a
+# little surprising.
+function find_gears_using_custom_loop(sym_position, dct)
+    val = 1
+    cnt = 0
+    for num_block in keys(dct)
+        if overlap(sym_position, num_block)
+            val *= dct[num_block]
+            cnt += 1
+        end
+        if cnt > 2 # no need to continue searching
+            break
+        end
+    end
+    return cnt == 2 ? val : 0
 end
 
 end # module
