@@ -19,12 +19,12 @@ end
 # run for a particular test file.
 function run(mod, filename="input.txt", parts=[1, 2])
     if isdefined(mod, :part1) && 1 in parts
-        println("part1: ", mod.part1(mod.parse_file(filename)))
+        @time println("part1: ", mod.part1(mod.parse_file(filename)))
     elseif 1 in parts
         println("Missing part1 definition")
     end
     if isdefined(mod, :part2) && 2 in parts
-        println("part2: ", mod.part2(mod.parse_file(filename)))
+        @time println("part2: ", mod.part2(mod.parse_file(filename)))
     elseif 2 in parts
         println("Missing part2 definition")
     end
