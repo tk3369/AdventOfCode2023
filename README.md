@@ -8,6 +8,7 @@ While not a primary concern for me, I'm keeping track and I may come back and op
 | 1   | 69.500 μs | 2.644 ms  | Find digits              |
 | 2   | 31.750 μs | 17.708 μs | Parsing, finding min/max |
 | 3   | 11.438 ms | 19.745 ms | Parsing, collision       |
+| 4   | 40.125 μs | 47.000 μs |                          |
 
 ## Workflow for a new day
 1. Create a new day folder using template folder `dayXX`
